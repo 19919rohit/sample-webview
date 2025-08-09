@@ -116,7 +116,7 @@ public class WebViewActivity extends BaseActivity {
         //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/sample/image.html");
         //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/image-provider/image-provider.html");
         //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/qrcode-reader/index.html");
-        WebViewHelper.loadUrl(this.webview, "https://aidashboardartstudio.netlify.app/");
+        WebViewHelper.loadUrl(this.webview, "https://aiartstudio.netlify.app/");
     }
 
     @Override
