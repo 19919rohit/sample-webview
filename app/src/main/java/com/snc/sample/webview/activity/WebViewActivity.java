@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
+import android.webkit.PermissionRequest; // ADDED
 import android.webkit.WebView;
 
 import com.snc.sample.webview.BuildConfig;
@@ -76,6 +77,8 @@ public class WebViewActivity extends BaseActivity {
         // add webview
         this.webview = WebViewHelper.addWebView(getContext(), contentView);
 
+        this.webview.getSettings().setMediaPlaybackRequiresUserGesture(false); // ADDED
+
         // options
         //this.webview.getSettings().setSupportMultipleWindows(true);
 
@@ -98,7 +101,13 @@ public class WebViewActivity extends BaseActivity {
         this.webview.setWebViewClient(webviewClient);
 
         // set webChromeClient
-        this.webChromeClient = new CSWebChromeClient(getContext());
+        this.webChromeClient = new CSWebChromeClient(getContext()) {
+            @Override // ADDED
+            public void onPermissionRequest(final PermissionRequest request) {
+                runOnUiThread(() -> request.grant(request.getResources()));
+            }
+        }; // ADDED END
+
         this.webview.setWebChromeClient(this.webChromeClient);
 
         // set fileChooser
@@ -112,11 +121,7 @@ public class WebViewActivity extends BaseActivity {
         this.webview.setDownloadListener(new CSDownloadListener(getActivity()));
 
         // load url
-        //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/sample/sample.html");
-        //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/sample/image.html");
-        //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/image-provider/image-provider.html");
-        //WebViewHelper.loadUrl(this.webview, WebViewHelper.getLocalBaseUrl("assets") + "/www/docs/qrcode-reader/index.html");
-        WebViewHelper.loadUrl(this.webview, "https://aiartstudio.netlify.app/");
+        WebViewHelper.loadUrl(this.webview, "https://noixsvoice.netlify.app/");
     }
 
     @Override
@@ -192,7 +197,6 @@ public class WebViewActivity extends BaseActivity {
         if (RequestCode.REQUEST_TAKE_A_PICTURE == requestCode) {
             Timber.i("[ACTIVITY] onActivityResult(): REQUEST_TAKE_A_PICTURE");
             PluginCamera.onActivityResultTakePicture(this.webview, requestCode, resultCode, data);
-            //AndroidBridgeProcessActivityResult.onActivityResultTakePicture(this.webview, requestCode, resultCode, data);
         }
         //++ [[E N D] Take a picture]
 
